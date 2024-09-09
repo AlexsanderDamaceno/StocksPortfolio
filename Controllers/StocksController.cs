@@ -21,9 +21,16 @@ namespace STOCKS.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Stock>> GetStocks()
+        public async Task<ActionResult<IEnumerable<Stock>>> GetStocks()
         {
-            return Ok(_stocks);
+            var stocks = await _stockDb.GetAllStocks();
+
+            if (stocks == null)
+            {
+                return NotFound("Error Getting Stocks");
+            }
+
+            return Ok(stocks);
         }
         
         [HttpPost]

@@ -21,6 +21,8 @@ namespace STOCKS.Data
 
      public async Task AddStock(Stock newStock) => await _stocksCollection.InsertOneAsync(newStock);
 
+     public async Task<List<Stock>> GetAllStocks() => await _stocksCollection.Find(_ => true).ToListAsync();
+
  }
 
 }
