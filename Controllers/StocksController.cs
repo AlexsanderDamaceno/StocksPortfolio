@@ -64,16 +64,18 @@ namespace STOCKS.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteStock(int id)
+        public async Task<IActionResult> DeleteStock(int id)
         {
-            var stock = _stocks.FirstOrDefault(s => s.Id == id);
+            var stock = await _stockDb.GetStockById(id);
+
             if (stock == null)
             {
                 return NotFound(new { message = $"Stock with ID {id} not found." });
             }
 
-            _stocks.Remove(stock);
-            return Ok();
+            await _stockDb.RemoveStock(id);
+            return NoContent();
         }
+
     }
 }

@@ -27,6 +27,9 @@ namespace STOCKS.Data
      
      public async Task UpdateStock(int id, Stock updatedStock) =>  await _stocksCollection.ReplaceOneAsync(x => x.Id == id, updatedStock);
 
+     public async Task RemoveStock(int id) => await _stocksCollection.DeleteOneAsync(x => x.Id == id);
+
+
  }
 
 }
