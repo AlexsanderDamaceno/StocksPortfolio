@@ -28,7 +28,7 @@ namespace STOCKS.Controllers
 
             stock.Id = _nextId++;
             _stocks.Add(stock);
-            
+
             return Ok();
         }
 
@@ -47,6 +47,19 @@ namespace STOCKS.Controllers
             Stock.Quantity = stock.Quantity;
             Stock.Price = stock.Price;
 
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteStock(int id)
+        {
+            var stock = _stocks.FirstOrDefault(s => s.Id == id);
+            if (stock == null)
+            {
+                return NotFound(new { message = $"Stock with ID {id} not found." });
+            }
+
+            _stocks.Remove(stock);
             return Ok();
         }
     }
