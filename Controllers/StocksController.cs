@@ -47,21 +47,20 @@ namespace STOCKS.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult EditStock(int id, [FromBody] Stock stock)
+        public async Task<IActionResult> EditStock(int id, [FromBody] Stock stock)
         {
-            var Stock = _stocks.FirstOrDefault(s => s.Id == id);
-            
-            if (Stock == null)
+            var existingStock = await _stockDb.GetStockById(id);
+
+            if (existingStock == null)
             {
                 return NotFound(new { message = $"Stock with ID {id} not found." });
             }
 
-            Stock.Symbol = stock.Symbol;
-            Stock.Name = stock.Name;
-            Stock.Quantity = stock.Quantity;
-            Stock.Price = stock.Price;
+            stock.Id = id; 
+            await _stockDb.UpdateStock(id, stock);
 
             return Ok();
+
         }
 
         [HttpDelete("{id}")]

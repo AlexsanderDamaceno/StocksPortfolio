@@ -23,6 +23,10 @@ namespace STOCKS.Data
 
      public async Task<List<Stock>> GetAllStocks() => await _stocksCollection.Find(_ => true).ToListAsync();
 
+     public async Task<Stock?> GetStockById(int id) => await _stocksCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+     
+     public async Task UpdateStock(int id, Stock updatedStock) =>  await _stocksCollection.ReplaceOneAsync(x => x.Id == id, updatedStock);
+
  }
 
 }
