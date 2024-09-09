@@ -1,3 +1,6 @@
+using STOCKS.Data;
+using STOCKS.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+
+// Add Mongodb
+builder.Services.Configure<mongoDbConfiguration>( builder.Configuration.GetSection("MongoDbSettings"));
+builder.Services.AddSingleton<Stockdb>();
 
 
 var app = builder.Build();

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using STOCKS.Models;
+using STOCKS.Data;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,13 @@ namespace STOCKS.Controllers
         private static List<Stock> _stocks = new List<Stock>();
         private static int _nextId = 1;
 
+        private readonly Stockdb _stockDb;
+
+        public StocksController(Stockdb stockDb)
+        {
+            _stockDb = stockDb;
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<Stock>> GetStocks()
         {
@@ -19,15 +27,14 @@ namespace STOCKS.Controllers
         }
         
         [HttpPost]
-        public ActionResult<Stock> PostStock([FromBody] Stock stock)
+        public async Task<ActionResult<Stock>> PostStock([FromBody] Stock stock)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            stock.Id = _nextId++;
-            _stocks.Add(stock);
+            await _stockDb.AddStock(stock);
 
             return Ok();
         }
